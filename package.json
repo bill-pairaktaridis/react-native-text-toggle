@@ -1,0 +1,24 @@
+{
+  "name": "text-toggler",
+  "version": "0.0.1",
+  "description": "React native toggle utilizing text and a moving layer as selectors",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "toggle",
+    "react-native",
+    "react-component"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bill-pairaktaridis/react-native-text-toggle.git"
+  },
+  "author": "Bill Pairaktaridis",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/bill-pairaktaridis/react-native-text-toggle/issues"
+  },
+  "homepage": "https://github.com/bill-pairaktaridis/react-native-text-toggle#readme"
+}

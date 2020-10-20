@@ -1,68 +1,71 @@
 import React, { useRef, useState } from 'react';
 import { View, StyleSheet, Pressable, Animated, Text } from 'react-native';
 
-function TextToggler() {
+export interface Props {
+    options: string[];
+    containerStyle?: {},
+    textStyle?: {},
+    onToggle: (value: string) => void
+}
 
-    const [status, setStatus] = useState('discover');
-    const [togglerWidth, setTogglerWidth] = useState(0)
+const TextToggler: React.FC<Props> = (props) => {
 
+    const [selected, setSelected] = useState(props.options[0]);
     const posAnim = useRef(new Animated.Value(4)).current;
+    const [optionsLeft, setOptionsLeft] = useState([])
+    const [optionWidth, setOptionWidth] = useState(0)
 
-    const moveRight = () => {
+    const moveTo = (leftPos: number) => {
         Animated.timing(posAnim, {
             useNativeDriver: false,
-            toValue: togglerWidth / 2,
+            toValue: leftPos,
             duration: 150
         }).start();
     };
 
-    const moveLeft = () => {
-        Animated.timing(posAnim, {
-            useNativeDriver: false,
-            toValue: 4,
-            duration: 150
-        }).start();
-    };
-
-    const _onToggle = (value: string) => {
-        setStatus(value)
-        if (value == 'nearby') {
-            moveRight()
-        } else {
-            moveLeft()
-        }
+    const _onToggle = (value: string, index: number) => {
+        props.onToggle(value)
+        setSelected(value)
+        moveTo(optionsLeft[index])
     }
 
-    const _onLayout = ({ nativeEvent: { layout: { width } } }) => {
-        setTogglerWidth(width)
+    const _onItemLayout = ({ nativeEvent: { layout } }) => {
+        console.log(layout)
+        setOptionsLeft([...optionsLeft, layout.x])
+        setOptionWidth(layout.width)
     }
+
 
     return (
-        <View style={styles.toggleContainer} onLayout={_onLayout}>
-            <Animated.View style={[styles.togglerSelector, { left: posAnim }]}>
+        <View style={props.containerStyle ? props.containerStyle : styles.toggleContainer}>
+            {props.options.map((item, index) => (
+                <View onLayout={_onItemLayout} key={index} style={styles.toggleOption}>
+                    <Pressable onPress={() => _onToggle(item, index)} style={styles.pressable}>
+                        <Text style={[props.textStyle ? props.textStyle : styles.toggleOptionText, selected == item && styles.selectedOption]}>
+                            {item}
+                        </Text>
+                    </Pressable>
+                </View>
+            ))}
+            <Animated.View style={[styles.togglerSelector, { left: posAnim, width: optionWidth }]}>
             </Animated.View>
-            <Pressable style={styles.toggleOption} onPress={() => _onToggle('discover')}>
-                <Text style={[styles.toggleOptionText, status == 'discover' && styles.selectedOption]}>
-                    Discover
-                </Text>
-            </Pressable>
-            <Pressable style={styles.toggleOption} onPress={() => _onToggle('nearby')}>
-                <Text style={[styles.toggleOptionText, status == 'nearby' && styles.selectedOption]}>
-                    Nearby
-                </Text>
-            </Pressable>
         </View>
     );
 }
 
 const styles = StyleSheet.create({
+    pressable: {
+        flexGrow: 1,
+        flexDirection: "row",
+        justifyContent: "center",
+        alignItems: "center",
+        alignSelf: "center",
+    },
     togglerSelector: {
         backgroundColor: "#ffffff",
         borderRadius: 14,
         position: "absolute",
         top: 4,
-        left: 4,
-        width: "49%",
         bottom: 4,
         elevation: 1,
         shadowColor: "rgba(0,0,0,0.25)",
@@ -72,10 +75,15 @@ const styles = StyleSheet.create({
         },
     },
     toggleOption: {
-        elevation: 2,
-        width: "50%",
         height: 22,
-        justifyContent: "center"
+        flexBasis: 0,
+        alignContent: "stretch",
+        flexGrow: 1,
+        flexShrink: 1,
+        elevation: 2,
+        justifyContent: "center",
+        alignItems: "center",
+        alignSelf: "stretch",
     },
     selectedOption: {
         color: "#2a2a2a",
@@ -85,7 +93,6 @@ const styles = StyleSheet.create({
         fontSize: 14,
         fontWeight: "700",
         textTransform: "uppercase",
-        textAlign: "center",
     },
     toggleContainer: {
         backgroundColor: "#949494",
@@ -96,12 +103,10 @@ const styles = StyleSheet.create({
             width: 4
         },
         borderRadius: 14,
-        position: "relative",
+        // position: "relative",
         flexDirection: "row",
-        width: 225,
+        // width: 225,
         padding: 3,
-        alignSelf: "center",
-        marginTop: 21
     },
 })
 
