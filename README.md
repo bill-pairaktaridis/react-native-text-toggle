@@ -1,5 +1,12 @@
 # react-native-text-toggle
 
+## How it looks
+![](example.gif)
+
+## Why does this exist?
+
+I wanted a component that does exactly this and figured I could also open source it to help others
+
 ## To install simply run
 
 `npm install react-native-text-toggle`
