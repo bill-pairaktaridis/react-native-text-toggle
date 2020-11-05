@@ -30,14 +30,16 @@ const TextToggler: React.FC<Props> = (props) => {
     }
 
     const _onItemLayout = ({ nativeEvent: { layout } }) => {
-        console.log(layout)
         setOptionsLeft([...optionsLeft, layout.x])
+        console.log(optionsLeft)
         setOptionWidth(layout.width)
     }
 
 
     return (
         <View style={props.containerStyle ? props.containerStyle : styles.toggleContainer}>
+            <Animated.View style={[styles.togglerSelector, { left: posAnim, width: optionWidth }]}>
+            </Animated.View>
             {props.options.map((item, index) => (
                 <View onLayout={_onItemLayout} key={index} style={styles.toggleOption}>
                     <Pressable onPress={() => _onToggle(item, index)} style={styles.pressable}>
@@ -47,8 +49,6 @@ const TextToggler: React.FC<Props> = (props) => {
                     </Pressable>
                 </View>
             ))}
-            <Animated.View style={[styles.togglerSelector, { left: posAnim, width: optionWidth }]}>
-            </Animated.View>
         </View>
     );
 }

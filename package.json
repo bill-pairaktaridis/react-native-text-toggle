@@ -1,6 +1,6 @@
 {
   "name": "text-toggler",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "React native toggle utilizing text and a moving layer as selectors",
   "main": "index.js",
   "scripts": {
