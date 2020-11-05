@@ -9,15 +9,15 @@ I wanted a component that does exactly this and figured I could also open source
 
 ## To install simply run
 
-`npm install react-native-text-toggle`
+`npm install text-toggler`
 
 or
 
-`yarn add react-native-text-toggle`
+`yarn add text-toggler`
 
 ## To use
 
-`import TextToggler from 'react-native-text-toggle`
+`import { TextToggler } from 'text-toggler'`
 
 ```javascript
 <TextToggler 
